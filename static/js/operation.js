@@ -328,6 +328,7 @@ function createTable(companyarr, identifier, data, headerFormat) {
 
         ////////////////////// total
 
+
         var node = document.createElement('tr')
 
         var childNode = document.createElement('td')
@@ -488,4 +489,41 @@ function changePage(evt, tabName) {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
+}
+
+var createBCTable = (obj) => {
+    // creating result obj
+    var resultobj = {}
+
+    //desired output
+    resultobj = {
+        planbudgetlsa: {
+
+        }
+    }
+
+    //loop trough bcobj
+    Object.keys(obj).forEach(item => {
+        // resultobj[item] = item
+        // console.log(resultobj)
+
+        //loop trough everytable
+        Object.keys(obj[item]).forEach(el => {
+
+            resultobj[item] = item
+            console.log(resultobj)
+
+
+            // loop trough every month
+            for (let i = 0; i < obj[item][el].length; i++) {
+
+                var data = obj[item][el][i]
+                console.log(data)
+
+            }
+
+
+        })
+
+    })
 }
