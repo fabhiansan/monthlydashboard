@@ -167,8 +167,8 @@ months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agust
 
 var features
 var apiPlanRKAB = new XMLHttpRequest();
-var url = 'http://BCLPRDP030:8000/api/planbudget/?format=json';
-// var url = 'https://raw.githubusercontent.com/fabhiansan/json/master/baru.json';
+// var url = 'http://BCLPRDP030:8000/api/planbudget/?format=json';
+var url = 'https://raw.githubusercontent.com/fabhiansan/json/master/baru.json';
 apiPlanRKAB.open('GET', url, true);
 apiPlanRKAB.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -241,43 +241,85 @@ apiPlanRKAB.onreadystatechange = function() {
         createTable(['lsa'], 'Actual', planBudgetarr, headerActualLSA)
         createTable(['scm'], 'Actual', planBudgetarr, headerActualSCM)
 
+        months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        bcdata = {}
+
         bctotal = {
-            // 'inpit_volumea': 0,
-            // 'inpit_distance_a': 0,
-            // 'inpit_volume_b': 0,
-            // 'inpit_distance_b': 0,
-            // 'outpit_volume': 0,
-            // 'outpit_distance': 0,
-            // 'coalptr_tonage_a': 0,
-            // 'coalptr_distance_a': 0,
-            // 'coalptr_tonage_b': 0,
-            // 'coalptr_distance_b': 0,
-            // 'coalrtk_tonage': 0,
-            // 'coalbarging_tonage': 0,
-            // 'sr': 0
+            'inpit_volumea': 0,
+            'inpit_distance_a': 0,
+            'inpit_volume_b': 0,
+            'inpit_distance_b': 0,
+            'outpit_volume': 0,
+            'outpit_distance': 0,
+            'coalptr_tonage_a': 0,
+            'coalptr_distance_a': 0,
+            'coalptr_tonage_b': 0,
+            'coalptr_distance_b': 0,
+            'coalrtk_tonage': 0,
+            'coalbarging_tonage': 0,
+            'sr': 0,
+            'month': ""
         }
 
-        for (datum in planBudgetarr) {
-
-            var attrarr = Object.keys(bctotal)
-
-            for (ol in attrarr) {
-                console.log(ol)
-                    // bctotal[ol] = 0
-
-                // Object.keys(planBudgetarr[datum]).forEach(el => {
-                //     console.log(el)
-                //         // console.log(ol)
-
-
-
-                // })
-
+        months.forEach(month => {
+            bctotal = {
+                'inpit_volumea': 0,
+                'inpit_distance_a': 0,
+                'inpit_volume_b': 0,
+                'inpit_distance_b': 0,
+                'outpit_volume': 0,
+                'outpit_distance': 0,
+                'coalptr_tonage_a': 0,
+                'coalptr_distance_a': 0,
+                'coalptr_tonage_b': 0,
+                'coalptr_distance_b': 0,
+                'coalrtk_tonage': 0,
+                'coalbarging_tonage': 0,
+                'sr': 0,
+                'month': ""
             }
+            bctotal['month'] = month
+            bcdata[month] = bctotal
 
-        }
+            for (datum in planBudgetarr) {
+                if (month == planBudgetarr[datum]['month']) {
+                    var attrarr = Object.keys(bctotal)
+                    attrarr.forEach(el => {
+                        Object.keys(planBudgetarr[datum]).forEach(ol => {
+                            if (ol == 'month') {
+                                if (bctotal['month'] == '') {
+                                    bctotal[ol] += planBudgetarr[datum][ol]
+                                }
+                            } else if (el == ol) {
+                                bctotal[ol] += planBudgetarr[datum][ol]
+                            }
+                        })
+                    })
+                }
+            }
+        })
+
+
+
+        // console.log(bctotal)
+
+        // for (ol in attrarr) {
+        //     console.log(ol)
+        // bctotal[ol] = 0
+
+        // Object.keys(planBudgetarr[datum]).forEach(el => {
+        //     console.log(el)
+        //         // console.log(ol)
+
+
+
+        // })
+
     }
+
 }
+
 
 apiPlanRKAB.send()
 
