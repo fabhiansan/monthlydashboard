@@ -164,46 +164,44 @@
         <div class="tab">
             <button id='defaultOpen2' class="tablinks" onclick="changeTab(event, 'planBudget')">Plan Budget</button>
             <button class="tablinks" onclick="changeTab(event, 'planRKAB')">Plan RKAB</button>
-            <button class="tablinks" onclick="changeTab(event, 'Actual')">Actual</button>
+            <button class="tablinks" disabled=true onclick="changeTab(event, 'Actual')">Actual</button>
         </div>
 
-        <!-- Tab content -->
-        <div id="planBudget" class="tabcontent">
-            <h2>Plan Budget</h2>
-            <div id='bcPlanBudgettest' class='scrollmenu'>
-            </div>
-            <div id='lsaPlanBudgettest' class='scrollmenu'>
-            </div>
-            <div id='scmPlanBudgettest' class='scrollmenu'>
-            </div>
-            <!-- <div id='bcPlanBudget' class='scrollmenu'>
-            </div>
-            <div id='lsaPlanBudget' class='scrollmenu'>
-            </div>
-            <div class='scrollmenu' id='scmPlanBudget'> -->
+
+
+
+    </div>
+    <!-- Tab content -->
+    <div id="planBudget" class="tabcontent">
+        <h2>Plan Budget</h2>
+        <div id='bcPlanBudget' class='scrollmenu'>
+        </div>
+        <div id='lsaPlanBudget' class='scrollmenu'>
+        </div>
+        <div id='scmPlanBudget' class='scrollmenu'>
         </div>
     </div>
 
     <div id="planRKAB" class="tabcontent">
         <h2>Plan RKAB</h2>
-        <!-- <div id='bcPlanRKAB' class='scrollmenu'>
-            </div>
-            <div class='scrollmenu' id='lsaPlanRKAB'>
-            </div>
-            <div class='scrollmenu' id='scmPlanRKAB'>
-            </div>
-            <div class='scrollmenu' id='pcsPlanRKAB'> -->
-    </div>
+        <div id='bcPlanRKAB' class='scrollmenu'>
+        </div>
+        <div class='scrollmenu' id='lsaPlanRkab'>
+        </div>
+        <div class='scrollmenu' id='scmPlanRkab'>
+        </div>
+        <div class='scrollmenu' id='pcsPlanRkab'>
+        </div>
     </div>
 
     <div id="Actual" class="tabcontent">
         <h2>Actual</h2>
-        <!-- <div id='bcActual' class='scrollmenu'>
-            </div>
-            <div class='scrollmenu' id='lsaActual'>
-            </div>
-            <div class='scrollmenu' id='scmActual'> -->
-    </div>
+        <div id='bcActual' class='scrollmenu'>
+        </div>
+        <div class='scrollmenu' id='lsaActual'>
+        </div>
+        <div class='scrollmenu' id='scmActual'>
+        </div>
     </div>
     </div>
 
@@ -215,7 +213,9 @@
 <script>
     document.getElementById("defaultOpen").click();
     document.getElementById("defaultOpen2").click();
-    createHeader('bc', 'bcPlanBudgettest', headerPlanBC)
+    // createHeader('bc', 'bcPlanBudget', headerPlanBC)
+    // createHeader('bc', 'bcPlanRKAB', headerPlanBC)
+    // createHeader('bc', 'bcActual', headerPlanBC)
 
     var table = document.getElementsByTagName('table')
     var tablearr = [...table]
