@@ -167,28 +167,124 @@ months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agust
 
 var features
 var apiPlanRKAB = new XMLHttpRequest();
-var url = 'https://raw.githubusercontent.com/fabhiansan/json/master/baru.json'
+var url = 'http://BCLPRDP030:8000/api/planbudget/?format=json';
+// var url = 'https://raw.githubusercontent.com/fabhiansan/json/master/baru.json';
 apiPlanRKAB.open('GET', url, true);
 apiPlanRKAB.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         var obj = JSON.parse(apiPlanRKAB.response)
         features = obj.results
-        console.log(features)
-        features.forEach(el => {
 
+        var tablename = []
+        features.forEach(el => {
+            //converting dates to month
             var dates = new Date(el.date).getMonth()
             month = months[dates]
             el['month'] = month.toString()
 
+
+            if (tablename.includes(el.table)) {
+
+            } else {
+                tablename.push(el.table)
+            }
+
         })
 
-        createTable(['lsa'], 'PlanBudgettest', features, headerPlanLSA)
-        createTable(['scm'], 'PlanBudgettest', features, headerPlanSCM)
+        // tablename.forEach(el => {
+        //     createTable(['lsa'], capitalize(el), features, headerPlanLSA)
+        //     createTable(['scm'], capitalize(el), features, headerPlanSCM)
+        //     console.log(capitalize(el))
+        // })
 
+        // Features : 
+        // objectid: 2
+        // table: "planRkab"
+        // company: "lsa"
+        // date: "2019-01-01"
+        // material_or_source: null
+        // inpit_volumea: 527000
+        // inpit_distance_a: 3179
+        // inpit_volume_b: 160000
+        // inpit_distance_b: 1700
+        // outpit_volume: null
+        // outpit_distance: null
+        // coalptr_tonage_a: 187500
+        // coalptr_distance_a: 18602
+        // coalptr_tonage_b: 48500
+        // coalptr_distance_b: 22244
+        // coalrtk_tonage: 187500
+        // coalbarging_tonage: 187500
+        // month: "Januari"
+
+        planBudgetarr = []
+        planRkabarr = []
+
+        for (x in features) {
+
+            if (features[x]['table'] == 'planRkab') {
+                planRkabarr.push(features[x])
+            } else if (features[x]['table'] == 'planBudget') {
+                planBudgetarr.push(features[x])
+            }
+
+        }
+
+        console.log(planBudgetarr)
+        console.log(planRkabarr)
+
+        createTable(['lsa'], 'PlanRkab', planRkabarr, headerPlanLSA)
+        createTable(['scm'], 'PlanRkab', planRkabarr, headerPlanSCM)
+        createTable(['pcs'], 'PlanRkab', planRkabarr, headerPlanPCS)
+        createTable(['lsa'], 'PlanBudget', planBudgetarr, headerPlanLSA)
+        createTable(['scm'], 'PlanBudget', planBudgetarr, headerPlanSCM)
+        createTable(['lsa'], 'Actual', planBudgetarr, headerActualLSA)
+        createTable(['scm'], 'Actual', planBudgetarr, headerActualSCM)
+
+        bctotal = {
+            // 'inpit_volumea': 0,
+            // 'inpit_distance_a': 0,
+            // 'inpit_volume_b': 0,
+            // 'inpit_distance_b': 0,
+            // 'outpit_volume': 0,
+            // 'outpit_distance': 0,
+            // 'coalptr_tonage_a': 0,
+            // 'coalptr_distance_a': 0,
+            // 'coalptr_tonage_b': 0,
+            // 'coalptr_distance_b': 0,
+            // 'coalrtk_tonage': 0,
+            // 'coalbarging_tonage': 0,
+            // 'sr': 0
+        }
+
+        for (datum in planBudgetarr) {
+
+            var attrarr = Object.keys(bctotal)
+
+            for (ol in attrarr) {
+                console.log(ol)
+                    // bctotal[ol] = 0
+
+                // Object.keys(planBudgetarr[datum]).forEach(el => {
+                //     console.log(el)
+                //         // console.log(ol)
+
+
+
+                // })
+
+            }
+
+        }
     }
 }
 
 apiPlanRKAB.send()
+
+const capitalize = (s) => {
+    if (typeof s !== 'string') return ''
+    return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
 
 bcobj = {}
@@ -201,20 +297,6 @@ function createTable(companyarr, identifier, data, headerFormat) {
     objidentifier = {}
 
     months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
-    // inpit_volumea: 316000
-    // inpit_distance_a: 2012
-    // inpit_volume_b: 20000
-    // inpit_distance_b: 5057
-    // outpit_volume: null
-    // outpit_distance: null
-    // coalptr_tonage_a: 134500
-    // coalptr_distance_a: 18440
-    // coalptr_tonage_b: null
-    // coalptr_distance_b: null
-    // coalrtk_tonage: null
-    // coalbarging_tonage: null
-    // month: "Januari"
 
     // format_table = [
     //     'inpitvol_south',
@@ -251,6 +333,7 @@ function createTable(companyarr, identifier, data, headerFormat) {
 
 
     companyarr.forEach(ele => {
+
         var DOMid = ele + identifier
 
         createHeader(ele, DOMid, headerFormat)
@@ -262,6 +345,7 @@ function createTable(companyarr, identifier, data, headerFormat) {
         dataarr = []
 
         data.forEach(month => {
+
 
             var bulan = new Date(month.date).getMonth()
 
@@ -317,13 +401,15 @@ function createTable(companyarr, identifier, data, headerFormat) {
 
                 dataarr.push(obj)
                 table.appendChild(node)
+            } else {
+                // console.error('checking else');
+
             }
 
             objidentifier[ele] = dataarr
             bcobj[identifier + ele] = objidentifier
-                // console.log(objidentifier)
-        })
 
+        })
 
 
         ////////////////////// total
@@ -384,6 +470,10 @@ function createTable(companyarr, identifier, data, headerFormat) {
                 var childNode2 = document.createElement('td')
 
                 childNode2.innerHTML = sum[item]
+
+                if (item == 'coalrtk_tonage' || item == 'coalbarging_tonage') {
+                    childNode2.colSpan = '2'
+                }
 
                 node.appendChild(childNode2)
             }
@@ -449,7 +539,7 @@ function createHeader(companyName, domId, arr) {
 
 }
 
-function changeTab(evt, cityName) {
+function changeTab(evt, tabname) {
     // Declare all variables
     var i, tabcontent, tablinks;
 
@@ -466,11 +556,11 @@ function changeTab(evt, cityName) {
     }
 
     // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(cityName).style.display = "block";
+    document.getElementById(tabname).style.display = "block";
     evt.currentTarget.className += " active";
 }
 
-function changePage(evt, tabName) {
+function changePage(evt, pageName) {
     // Declare all variables
     var i, tabcontent, tablinks;
 
@@ -487,7 +577,7 @@ function changePage(evt, tabName) {
     }
 
     // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(tabName).style.display = "block";
+    document.getElementById(pageName).style.display = "block";
     evt.currentTarget.className += " active";
 }
 
@@ -512,6 +602,7 @@ var createBCTable = (obj) => {
 
             resultobj[item] = item
             console.log(resultobj)
+
 
 
             // loop trough every month
