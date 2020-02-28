@@ -164,7 +164,7 @@
         <div class="tab">
             <button id='defaultOpen2' class="tablinks" onclick="changeTab(event, 'planBudget')">Plan Budget</button>
             <button class="tablinks" onclick="changeTab(event, 'planRKAB')">Plan RKAB</button>
-            <button class="tablinks" disabled=true onclick="changeTab(event, 'Actual')">Actual</button>
+            <button class="tablinks" onclick="changeTab(event, 'Actual')">Actual</button>
         </div>
 
 
@@ -184,7 +184,7 @@
 
     <div id="planRKAB" class="tabcontent">
         <h2>Plan RKAB</h2>
-        <div id='bcPlanRKAB' class='scrollmenu'>
+        <div id='bcPlanRkab' class='scrollmenu'>
         </div>
         <div class='scrollmenu' id='lsaPlanRkab'>
         </div>

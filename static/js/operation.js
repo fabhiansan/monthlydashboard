@@ -168,8 +168,11 @@ months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agust
 var features
 var apiPlanRKAB = new XMLHttpRequest();
 // var url = 'http://BCLPRDP030:8000/api/planbudget/?format=json';
-var url = 'https://raw.githubusercontent.com/fabhiansan/json/master/baru.json';
+// var url = 'https://raw.githubusercontent.com/fabhiansan/json/master/baru.json';
+var url = 'static/js/djangodata.json';
 apiPlanRKAB.open('GET', url, true);
+
+
 apiPlanRKAB.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         var obj = JSON.parse(apiPlanRKAB.response)
@@ -241,29 +244,16 @@ apiPlanRKAB.onreadystatechange = function() {
         createTable(['lsa'], 'Actual', planBudgetarr, headerActualLSA)
         createTable(['scm'], 'Actual', planBudgetarr, headerActualSCM)
 
+        ////////////////////////////
         months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
         bcdata = {}
-
-        bctotal = {
-            'inpit_volumea': 0,
-            'inpit_distance_a': 0,
-            'inpit_volume_b': 0,
-            'inpit_distance_b': 0,
-            'outpit_volume': 0,
-            'outpit_distance': 0,
-            'coalptr_tonage_a': 0,
-            'coalptr_distance_a': 0,
-            'coalptr_tonage_b': 0,
-            'coalptr_distance_b': 0,
-            'coalrtk_tonage': 0,
-            'coalbarging_tonage': 0,
-            'sr': 0,
-            'month': ""
-        }
-
+        bcdataarr = []
         months.forEach(month => {
             bctotal = {
+                'table': '',
+                'company': '',
+                'date': '',
                 'inpit_volumea': 0,
                 'inpit_distance_a': 0,
                 'inpit_volume_b': 0,
@@ -279,18 +269,27 @@ apiPlanRKAB.onreadystatechange = function() {
                 'sr': 0,
                 'month': ""
             }
+
             bctotal['month'] = month
             bcdata[month] = bctotal
 
             for (datum in planBudgetarr) {
                 if (month == planBudgetarr[datum]['month']) {
+
                     var attrarr = Object.keys(bctotal)
+
                     attrarr.forEach(el => {
+
                         Object.keys(planBudgetarr[datum]).forEach(ol => {
-                            if (ol == 'month') {
-                                if (bctotal['month'] == '') {
+                            // console.log(ol)
+                            if (ol == 'month' || ol == 'table' || ol == 'date') {
+
+                                if (bctotal[ol] == '') {
                                     bctotal[ol] += planBudgetarr[datum][ol]
                                 }
+
+                            } else if (ol == 'company') {
+                                bctotal[ol] = 'bc'
                             } else if (el == ol) {
                                 bctotal[ol] += planBudgetarr[datum][ol]
                             }
@@ -298,28 +297,114 @@ apiPlanRKAB.onreadystatechange = function() {
                     })
                 }
             }
+
+            for (el in bcdata) {
+                if (bcdataarr.indexOf(bcdata[el]) == -1) {
+                    bcdataarr.push(bcdata[el])
+                        // console.log('a')
+                } else {
+                    // console.log('b')
+                }
+            }
+
         })
 
+        bcdataarr.forEach(el => {
+            el['inpit_volumea'] = el['inpit_volumea'] + el['inpit_volume_b']
+            el['inpit_volume_b'] = ''
+            el['inpit_distance_a'] = el['inpit_distance_a'] + el['inpit_distance_b']
+            el['inpit_distance_b'] = ''
+            el['coalptr_tonage_a'] = el['coalptr_tonage_a'] + el['coalptr_tonage_b']
+            el['coalptr_tonage_b'] = ''
+            el['coalptr_distance_a'] = el['coalptr_distance_a'] + el['coalptr_distance_b']
+            el['coalptr_distance_b'] = ''
+        })
+        createTable(['bc'], 'PlanBudget', bcdataarr, headerPlanBC)
 
+        /////////////////////////////////
 
-        // console.log(bctotal)
+        months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
-        // for (ol in attrarr) {
-        //     console.log(ol)
-        // bctotal[ol] = 0
+        var bcdata = {}
+        bcdataarr = []
+        months.forEach(month => {
+            bctotal = {
+                'table': '',
+                'company': '',
+                'date': '',
+                'inpit_volumea': 0,
+                'inpit_distance_a': 0,
+                'inpit_volume_b': 0,
+                'inpit_distance_b': 0,
+                'outpit_volume': 0,
+                'outpit_distance': 0,
+                'coalptr_tonage_a': 0,
+                'coalptr_distance_a': 0,
+                'coalptr_tonage_b': 0,
+                'coalptr_distance_b': 0,
+                'coalrtk_tonage': 0,
+                'coalbarging_tonage': 0,
+                'sr': 0,
+                'month': ""
+            }
 
-        // Object.keys(planBudgetarr[datum]).forEach(el => {
-        //     console.log(el)
-        //         // console.log(ol)
+            bctotal['month'] = month
+            bcdata[month] = bctotal
 
+            for (datum in planRkabarr) {
+                if (month == planRkabarr[datum]['month']) {
 
+                    var attrarr = Object.keys(bctotal)
 
-        // })
+                    attrarr.forEach(el => {
 
+                        Object.keys(planRkabarr[datum]).forEach(ol => {
+                            // console.log(ol)
+                            if (ol == 'month' || ol == 'table' || ol == 'date') {
+
+                                if (bctotal[ol] == '') {
+                                    bctotal[ol] += planRkabarr[datum][ol]
+                                }
+
+                            } else if (ol == 'company') {
+                                bctotal[ol] = 'bc'
+                            } else if (ol == 'sr') {
+                                // bctotal[ol]
+                            } else if (el == ol) {
+                                bctotal[ol] += planBudgetarr[datum][ol]
+                            }
+                        })
+                    })
+                }
+            }
+
+            for (el in bcdata) {
+                if (bcdataarr.indexOf(bcdata[el]) == -1) {
+                    bcdataarr.push(bcdata[el])
+                        // console.log('a')
+                } else {
+
+                }
+            }
+
+        })
+
+        bcdataarr.forEach(el => {
+            el['inpit_volumea'] = el['inpit_volumea'] + el['inpit_volume_b']
+            el['inpit_volume_b'] = 0
+            el['inpit_distance_a'] = el['inpit_distance_a'] + el['inpit_distance_b']
+            el['inpit_distance_b'] = 0
+            el['coalptr_tonage_a'] = el['coalptr_tonage_a'] + el['coalptr_tonage_b']
+            el['coalptr_tonage_b'] = 0
+            el['coalptr_distance_a'] = el['coalptr_distance_a'] + el['coalptr_distance_b']
+            el['coalptr_distance_b'] = 0
+
+        })
+        createTable(['bc'], 'PlanRkab', bcdataarr, headerPlanBC)
     }
 
-}
 
+}
 
 apiPlanRKAB.send()
 
@@ -339,23 +424,6 @@ function createTable(companyarr, identifier, data, headerFormat) {
     objidentifier = {}
 
     months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
-    // format_table = [
-    //     'inpitvol_south',
-    //     'inpitdist_south',
-    //     'inpitvol_north',
-    //     'inpitdist_north',
-    //     'outpitvol',
-    //     'outpitdist',
-    //     'coalptr_ton',
-    //     'coalptr_m',
-    //     'coalptr_ton_north',
-    //     'coalptr_m_north',
-    //     'coalrtk',
-    //     'coalbarging',
-    //     'rtk'
-    // ];
-
 
     format_table = [
         'inpit_volumea',
@@ -418,6 +486,18 @@ function createTable(companyarr, identifier, data, headerFormat) {
 
                         node.appendChild(childNode2)
 
+                    } else if (el == 'sr') {
+
+                        var childNode2 = document.createElement('td')
+
+                        childNode2.className = 'sr'
+
+                        childNode2.innerHTML = ((month.inpit_volumea + month.inpit_volume_b) / (month.coalptr_tonage_a + month.coalptr_tonage_b)).toFixed(2)
+
+                        node.appendChild(childNode2)
+
+                        obj[el] = month[el]
+
                     } else if (el != 'coalrtk_tonage' && el != 'sr') {
 
                         var childNode2 = document.createElement('td')
@@ -426,15 +506,6 @@ function createTable(companyarr, identifier, data, headerFormat) {
 
                         node.appendChild(childNode2)
 
-                        obj[el] = month[el]
-
-                    } else {
-
-                        var childNode2 = document.createElement('td')
-
-                        childNode2.innerHTML = ((month.inpit_volumea + month.inpit_volume_b) / (month.coalptr_tonage_a + month.coalptr_tonage_b)).toFixed(2)
-
-                        node.appendChild(childNode2)
                         obj[el] = month[el]
 
                     }
@@ -479,15 +550,33 @@ function createTable(companyarr, identifier, data, headerFormat) {
 
                 format_table.forEach(format => {
 
-                    if (typeof datum[format] == 'number') {
+                    if (typeof datum[format] == 'number' && format != 'sr') {
+
                         if (format in sum) {
                             sum[format] += parseInt(datum[format])
                         } else {
                             sum[format] = parseInt(datum[format])
                         }
 
+                    } else if (format == 'sr') {
+
+                        // if (typeof datum['inpit_volume_b'] == 'number' && typeof datum['coalptr_tonage_b'] == 'number') {
+                        sum[format] = parseFloat(((datum['inpit_volumea'] + datum['inpit_volume_b']) / (datum['coalptr_tonage_a'] + datum['coalptr_tonage_b'])).toFixed(2))
+                            // } else if (typeof datum['inpit_volume_b'] != 'number') {
+                            //     sum[format] += parseFloat(((datum['inpit_volumea'] + datum['inpit_volume_b']) / (datum['coalptr_tonage_a'] + datum['coalptr_tonage_b'])).toFixed(2))
+                            // } else {
+
+                        // }
+                        console.log(format + ' ' + ele + ' = ' + sum[format])
+                        console.log(typeof datum['inpit_volumea'])
+                        console.log(typeof datum['inpit_volume_b'])
+                        console.log(typeof datum['coalptr_tonage_a'])
+                        console.log(typeof datum['coalptr_tonage_b'] + ' ' + datum['coalptr_tonage_b'])
+
+                        console.log(typeof sum[format])
+
                     } else {
-                        sum[format] = '-'
+                        sum[format] = ''
                     }
 
                 })
@@ -496,9 +585,25 @@ function createTable(companyarr, identifier, data, headerFormat) {
 
         })
 
+        // format_table = [
+        //     'inpit_volumea',
+        //     'inpit_distance_a',
+        //     'inpit_volume_b',
+        //     'inpit_distance_b',
+        //     'outpit_volume',
+        //     'outpit_distance',
+        //     'coalptr_tonage_a',
+        //     'coalptr_distance_a',
+        //     'coalptr_tonage_b',
+        //     'coalptr_distance_b',
+        //     'coalrtk_tonage',
+        //     'coalbarging_tonage',
+        //     'sr'
+        // ];
+
         Object.keys(sum).forEach(function(item) {
 
-            if (typeof sum[item] == 'number') {
+            if (typeof sum[item] == 'number' || typeof sum[item] == 'float') {
                 var childNode2 = document.createElement('td')
 
                 childNode2.innerHTML = sum[item]
@@ -508,12 +613,12 @@ function createTable(companyarr, identifier, data, headerFormat) {
                 }
 
                 node.appendChild(childNode2)
-            } else if (sum[item] == '-') {
+            } else if (sum[item] == '') {
                 var childNode2 = document.createElement('td')
 
                 childNode2.innerHTML = sum[item]
 
-                if (item == 'coalrtk_tonage' || item == 'coalbarging_tonage') {
+                if (item == 'coalrtk_tonage' || item == 'coalbarging_tonage' || item == '-') {
                     childNode2.colSpan = '2'
                 }
 
