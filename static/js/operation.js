@@ -163,6 +163,42 @@ headerActualLSA = [
     ]
 ];
 
+/// Plan Agreed 
+
+headerPlanAgreed = [
+    ['Month',
+        'Inpit',
+        'Outpit',
+        'Coal PTR',
+        'SR'
+    ],
+    ['Vol (BCM)',
+        'Dist (m)',
+        'Vol (BCM)',
+        'Dist (m)',
+        'Tonnage (Ton)',
+        'Dist (m)',
+    ]
+];
+/// Plan Monthly SIS
+headerPlanMonthlySis = [
+    ['Month',
+        'Inpit',
+        'Outpit',
+        'Coal PTR',
+        'SR'
+    ],
+    ['Vol (BCM)',
+        'Dist (m)',
+        'Vol (BCM)',
+        'Dist (m)',
+        'Tonnage (Ton)',
+        'Dist (m)',
+    ]
+];
+
+///
+
 months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
 var features
@@ -538,7 +574,7 @@ function createTable(companyarr, identifier, data, headerFormat) {
 
         node.appendChild(childNode)
 
-        var sum = {}
+        sum = {}
 
         sum['identifier'] = identifier
 
@@ -560,20 +596,16 @@ function createTable(companyarr, identifier, data, headerFormat) {
 
                     } else if (format == 'sr') {
 
-                        // if (typeof datum['inpit_volume_b'] == 'number' && typeof datum['coalptr_tonage_b'] == 'number') {
-                        sum[format] = parseFloat(((datum['inpit_volumea'] + datum['inpit_volume_b']) / (datum['coalptr_tonage_a'] + datum['coalptr_tonage_b'])).toFixed(2))
-                            // } else if (typeof datum['inpit_volume_b'] != 'number') {
-                            //     sum[format] += parseFloat(((datum['inpit_volumea'] + datum['inpit_volume_b']) / (datum['coalptr_tonage_a'] + datum['coalptr_tonage_b'])).toFixed(2))
-                            // } else {
+                        if (typeof datum['coalptr_tonage_b'] == 'object') {
+                            datum['coalptr_tonage_b'] = 0
+                        } else if (typeof datum['inpit_volume_b'] != 'number') {
+                            datum['inpit_volume_b'] = 0
+                        }
+                        if (typeof datum['coalptr_tonage_b'] != 'number') {
+                            datum['coalptr_tonage_b'] = 0
+                        }
 
-                        // }
-                        console.log(format + ' ' + ele + ' = ' + sum[format])
-                        console.log(typeof datum['inpit_volumea'])
-                        console.log(typeof datum['inpit_volume_b'])
-                        console.log(typeof datum['coalptr_tonage_a'])
-                        console.log(typeof datum['coalptr_tonage_b'] + ' ' + datum['coalptr_tonage_b'])
-
-                        console.log(typeof sum[format])
+                        sum[format] = parseFloat(((sum['inpit_volumea'] + sum['inpit_volume_b']) / (sum['coalptr_tonage_a'] + sum['coalptr_tonage_b'])).toFixed(2))
 
                     } else {
                         sum[format] = ''

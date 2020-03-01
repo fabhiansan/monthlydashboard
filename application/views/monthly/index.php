@@ -162,9 +162,11 @@
 
     <div class="pagecontent" id='monthlyReport'>
         <div class="tab">
-            <button id='defaultOpen2' class="tablinks" onclick="changeTab(event, 'planBudget')">Plan Budget</button>
+            <button id='defaultOpen2' class="tablinks" onclick="changeTab(event, 'Actual')">Actual</button>
+            <button class="tablinks" onclick="changeTab(event, 'planBudget')">Plan Budget</button>
             <button class="tablinks" onclick="changeTab(event, 'planRKAB')">Plan RKAB</button>
-            <button class="tablinks" onclick="changeTab(event, 'Actual')">Actual</button>
+            <button class="tablinks" onclick="changeTab(event, 'planAgreed')">Plan Agreed</button>
+            <button class="tablinks" onclick="changeTab(event, 'planMonthlySis')">Plan Monthly SIS</button>
         </div>
 
 
@@ -201,6 +203,25 @@
         <div class='scrollmenu' id='lsaActual'>
         </div>
         <div class='scrollmenu' id='scmActual'>
+        </div>
+    </div>
+
+    <div id="planAgreed" class="tabcontent">
+        <h2>Actual</h2>
+        <div id='bcplanAgreed' class='scrollmenu'>
+        </div>
+        <div class='scrollmenu' id='lsaplanAgreed'>
+        </div>
+        <div class='scrollmenu' id='scmplanAgreed'>
+        </div>
+    </div>
+    <div id="planMonthlySis" class="tabcontent">
+        <h2>Actual</h2>
+        <div id='bcplanMonthlySis' class='scrollmenu'>
+        </div>
+        <div class='scrollmenu' id='lsaplanMonthlySis'>
+        </div>
+        <div class='scrollmenu' id='scmplanMonthlySis'>
         </div>
     </div>
     </div>
