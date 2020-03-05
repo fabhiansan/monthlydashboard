@@ -19,14 +19,14 @@ html {
 .fadeInDown {
     -webkit-animation-name: fadeInDown;
     animation-name: fadeInDown;
-    -webkit-animation-delay: 3s;
-    -moz-animation-delay: 3s;
-    animation-delay: 3s;
+    /* -webkit-animation-delay: 2.5s;
+    -moz-animation-delay: 2.5s;
+    animation-delay: 2.5s; */
     -webkit-animation-duration: 0.5s;
     animation-duration: 0.5s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
-    z-index: 1;
+    /* z-index: 1; */
 }
 
 @-webkit-keyframes fadeInDown {
@@ -157,20 +157,18 @@ html {
 }
 
 #sidebar {
-    width: 15vw;
-    position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
-    z-index: 1;
     background: rgb(44, 47, 56);
     color: #fff;
     transition: all 0.3s;
 }
 
 #content {
-    margin-left: 15vw;
     background-color: #ccc;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
 }
 
 table {
@@ -183,6 +181,7 @@ div.scrollmenu {
     overflow: auto;
     white-space: nowrap;
     margin: 100px;
+    margin-bottom: 50px;
     padding: 20px;
     border-radius: 5px;
 }
@@ -319,4 +318,5 @@ h3 {
 .navbar,
 .container-fluid {
     background-color: #ccc;
+    padding: 0;
 }
